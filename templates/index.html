@@ -1,154 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Analyse Prédictive des Défauts</title>
+    <style>
+        /* Couleurs principales basées sur le logo */
+        body {
+            background-color: #f5f7fa;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Conteneur principal */
+        .container {
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 50px auto;
+            border-top: 6px solid #ac8400;
+        }
+
+        h2 {
+            color: #002f87;
+            font-weight: bold;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Styles des champs de saisie */
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        input[type="number"]:focus, input[type="text"]:focus {
+            border-color: #002f87;
+        }
+
+        /* Bouton de soumission */
+        button {
+            padding: 12px;
+            background-color: #002f87;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ac8400;
+        }
+
+        /* Résultat de la prédiction */
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* Pied de page */
+        footer {
+            margin-top: 50px;
+            color: #777;
+            font-size: 14px;
+        }
+
+    </style>
 </head>
 
 <body>
 
-    <div style="color:blue">
-        <form action="{{ url_for('predict')}}" method="post">
-            <h2>Predictive Analysis</h2>
-            <h3>Age</h3><input id="first" name="Age" type="number " required="required">
-            <h3>RestingBP(100-200)</h3><input id="second" name="RestingBP" required="required">
-            <h3>Cholesterol (100-600)</h3><input id="third" name="Cholesterol" required="required">
-            <h3>FastingBS (0 or 1)</h3><input id="fourth" name="FastingBS" required="required">
-            <h3>MaxHR (60-205)</h3><input id="fifth" name="MaxHR" required="required">
-            <h3>Oldpeak (0.0-6.2)</h3><input id="sixth" name="Oldpeak" required="required">
-            <br><br><button id="sub" type="submit ">Result</button>
-            <br>
+    <div class="container">
+        <h2>Modèle Prédictif de Défaut de Paiement</h2>
+        <p>Veuillez entrer les détails du prêt pour prédire la probabilité de défaut d'un client.</p>
 
+        <form action="{{ url_for('predict') }}" method="post">
+            <label for="customer_id">ID Client</label>
+            <input id="customer_id" name="customer_id" type="text" required>
+
+            <label for="credit_lines_outstanding">Lignes de Crédit Actives</label>
+            <input id="credit_lines_outstanding" name="credit_lines_outstanding" type="number" required>
+
+            <label for="loan_amt_outstanding">Montant du Prêt Restant</label>
+            <input id="loan_amt_outstanding" name="loan_amt_outstanding" type="number" step="any" required>
+
+            <label for="total_debt_outstanding">Dette Totale Restante</label>
+            <input id="total_debt_outstanding" name="total_debt_outstanding" type="number" step="any" required>
+
+            <label for="income">Revenu Annuel</label>
+            <input id="income" name="income" type="number" step="any" required>
+
+            <label for="years_employed">Années d'Emploi</label>
+            <input id="years_employed" name="years_employed" type="number" required>
+
+            <label for="fico_score">Score FICO</label>
+            <input id="fico_score" name="fico_score" type="number" required>
+
+            <button id="submit" type="submit">Prédire le Résultat</button>
         </form>
 
-        <br><br><h3>{{ prediction_text }}<h3>
+        {% if prediction_text %}
+        <div class="result">
+            <h3>Résultat de la Prédiction</h3>
+            <p>{{ prediction_text }}</p>
+        </div>
+        {% endif %}
     </div>
 
+    
 
-    <style>
-        body {
-            background-color: lightslategray;
-            text-align: center;
-            padding: 0px;
-        }
-        
-        #research {
-            font-size: 18px;
-            width: 100px;
-            height: 23px;
-            top: 23px;
-        }
-        
-        #box {
-            border-radius: 60px;
-            border-color: 45px;
-            border-style: solid;
-            font-family: cursive;
-            text-align: center;
-            background-color: rgb(168, 131, 61);
-            font-size: medium;
-            position: absolute;
-            width: 700px;
-            bottom: 9%;
-            height: 850px;
-            right: 30%;
-            padding: 0px;
-            margin: 0px;
-            font-size: 14px;
-        }
-        
-        #fuel {
-            width: 83px;
-            height: 43px;
-            text-align: center;
-            border-radius: 14px;
-            font-size: 20px;
-        }
-        
-        #fuel:hover {
-            background-color: coral;
-        }
-        
-        #research {
-            width: 99px;
-            height: 43px;
-            text-align: center;
-            border-radius: 14px;
-            font-size: 18px;
-        }
-        
-        #research:hover {
-            background-color: coral;
-        }
-        
-        #resea {
-            width: 99px;
-            height: 43px;
-            text-align: center;
-            border-radius: 14px;
-            font-size: 18px;
-        }
-        
-        #resea:hover {
-            background-color: coral;
-        }
-        
-        #sub {
-            width: 120px;
-            height: 43px;
-            text-align: center;
-            border-radius: 14px;
-            font-size: 18px;
-        }
-        
-        #sub:hover {
-            background-color: darkcyan;
-        }
-        
-        #first {
-            border-radius: 14px;
-            height: 25px;
-            font-size: 20px;
-            text-align: center;
-        }
-        
-        #second {
-            border-radius: 14px;
-            height: 25px;
-            font-size: 20px;
-            text-align: center;
-        }
-        
-        #third {
-            border-radius: 14px;
-            height: 25px;
-            font-size: 20px;
-            text-align: center;
-        }
-        
-        #fourth {
-            border-radius: 14px;
-            height: 25px;
-            font-size: 20px;
-            text-align: center;
-        }
-
-        #fifth {
-            border-radius: 14px;
-            height: 25px;
-            font-size: 20px;
-            text-align: center;
-        }
-
-        #sixth {
-            border-radius: 14px;
-            height: 25px;
-            font-size: 20px;
-            text-align: center;
-        }
-    </style>
 </body>
 
 </html>
