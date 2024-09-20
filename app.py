@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Charger le modèle
 model = pickle.load(open("loan-predictor-model.pkl", "rb"))
-
+#Edit to deploy
 def model_pred(features):
     test_data = pd.DataFrame([features])
     prediction = model.predict(test_data)
