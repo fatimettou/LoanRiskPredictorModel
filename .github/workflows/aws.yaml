@@ -5,13 +5,13 @@ on:
     branches: [ "main" ]
 
 env:
-  AWS_REGION: eu-north-1                 # set this to your prefe.rred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: mlops-s           # set this to your Amazon ECR repository name
-  ECS_SERVICE: service-loan-project24                # set this to your Amazon ECS service name
-  ECS_CLUSTER: projectCluster-sda   # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: ecsTasksdaProject  # set this to the path to your Amazon ECS task definition
+  AWS_REGION: us-east-1                 # set this to your prefe.rred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: mlops           # set this to your Amazon ECR repository name
+  ECS_SERVICE: mathildeservice                # set this to your Amazon ECS service name
+  ECS_CLUSTER: clustermlops  # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: mathilde  # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: conteneur-project-sda           # set this to the name of the container in the
+  CONTAINER_NAME: mathildeconteneur          # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
 
 permissions:
